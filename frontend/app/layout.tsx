@@ -7,6 +7,12 @@ const plusJakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+export const metadata = {
+  title: "Smart EV Trip Planner",
+  description:
+    "Plan EV routes, find charging stations along the way, and save your trip history.",
+};
+
 export default function RootLayout({
   children,
 }: {

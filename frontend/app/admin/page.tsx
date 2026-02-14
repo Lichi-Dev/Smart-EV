@@ -303,9 +303,9 @@ export default function AdminPage() {
             </div>
           </div>
 
-          <div className="card">
-            <h2 className="section-title mb-4">Trip history</h2>
-            <div className="max-h-80 space-y-2 overflow-auto">
+          <div className="card flex h-full min-h-0 flex-col">
+            <h2 className="section-title mb-4 shrink-0">Trip history</h2>
+            <div className="min-h-0 flex-1 space-y-2 overflow-auto">
               {trips.map((t) => (
                 <div
                   key={t._id}
