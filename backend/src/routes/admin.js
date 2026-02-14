@@ -78,21 +78,26 @@ router.get("/trips", async (req, res, next) => {
 
 router.get("/traffic", async (req, res, next) => {
   try {
-    const agg = await TrafficLog.aggregate([
-      {
-        $group: {
-          _id: { city: "$city", country: "$country" },
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $sort: { count: -1 },
-      },
-      { $limit: 50 },
+    const [byPathAgg, byCityAgg] = await Promise.all([
+      TrafficLog.aggregate([
+        { $group: { _id: { path: "$path", method: "$method" }, count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 50 },
+      ]),
+      TrafficLog.aggregate([
+        { $match: { city: { $exists: true, $nin: [null, ""] } } },
+        { $group: { _id: { city: "$city", country: "$country" }, count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 50 },
+      ]),
     ]);
-
     res.json({
-      byCity: agg.map((x) => ({
+      byPath: byPathAgg.map((x) => ({
+        path: x._id.path,
+        method: x._id.method,
+        count: x.count,
+      })),
+      byCity: byCityAgg.map((x) => ({
         city: x._id.city,
         country: x._id.country,
         count: x.count,

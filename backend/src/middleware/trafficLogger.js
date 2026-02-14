@@ -36,16 +36,17 @@ export const trafficLogger = (req, res, next) => {
     let city;
     let country;
 
-    const geoUrl =
-      !ip || isLocalIp(ip)
-        ? "https://ipapi.co/json/"
-        : `https://ipapi.co/${ip}/json/`;
+    const query = !ip || isLocalIp(ip) ? "" : encodeURIComponent(ip);
+    const geoUrl = `http://ip-api.com/json/${query}?fields=status,city,country`;
 
     axios
       .get(geoUrl, { timeout: GEO_TIMEOUT_MS })
       .then((resp) => {
-        city = resp.data?.city ?? undefined;
-        country = resp.data?.country_name ?? undefined;
+        const data = resp.data;
+        if (data && data.status === "success") {
+          city = data.city ?? undefined;
+          country = data.country ?? undefined;
+        }
         logEntry();
       })
       .catch(() => {
