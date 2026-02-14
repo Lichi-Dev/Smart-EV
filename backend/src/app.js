@@ -25,8 +25,13 @@ export const createApp = async () => {
   app.use(morgan("dev"));
   app.use(trafficLogger);
 
-  app.get("/health", (req, res) => {
-    res.json({ status: "ok" });
+  app.get("/health", async (req, res) => {
+    try {
+      await mongoose.connection.db.admin().ping();
+      res.json({ status: "ok", mongo: "ok" });
+    } catch (err) {
+      res.status(503).json({ status: "unhealthy", mongo: "down" });
+    }
   });
 
   app.use("/api/routes", routesRouter);
