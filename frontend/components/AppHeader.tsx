@@ -20,6 +20,12 @@ export default function AppHeader({ title, showNav = true }: AppHeaderProps) {
         {showNav && (
           <nav className="flex gap-4">
             <Link
+              href="/events"
+              className="text-sm font-medium text-slate-600 hover:text-blue-600"
+            >
+              Events
+            </Link>
+            <Link
               href="/history"
               className="text-sm font-medium text-slate-600 hover:text-blue-600"
             >
@@ -30,6 +36,12 @@ export default function AppHeader({ title, showNav = true }: AppHeaderProps) {
               className="text-sm font-medium text-slate-600 hover:text-blue-600"
             >
               Admin
+            </Link>
+            <Link
+              href="/login"
+              className="text-sm font-medium text-slate-600 hover:text-blue-600"
+            >
+              Login
             </Link>
           </nav>
         )}

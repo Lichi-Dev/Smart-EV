@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import StoreProvider from "../store/StoreProvider";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -20,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={plusJakarta.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <StoreProvider>{children}</StoreProvider>
+      </body>
     </html>
   );
 }
